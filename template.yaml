@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  yeti-certigen
+
+  SAM Template for the certificate generator
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 60
+
+Resources:
+  DatabaseOperationsFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      FunctionName: yeti-certigen-dynamodb
+      Description: DynamoDB operations pertaining to Certigen
+      CodeUri: certigen-db-operations
+      Handler: index.lambdaHandler
+      Runtime: nodejs12.x
+      Role: arn:aws:iam::357550834183:role/service-role/yeti-lambda-role-190ry10t
+      Events:
+        GetAllCertificates:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /certigen/certificate/all
+            Method: get
+        GetCertificateDataByType:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /certigen/certificate
+            Method: get
+        GetCertificateMetaByType:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /certigen/certificate/meta
+            Method: get
+        CreateCertificate:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /certigen/certificate
+            Method: post
+        UpdateCertificate:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /certigen/certificate/{type}
+            Method: put
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  CertigenAPI:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+  DatabaseOperationsFunction:
+    Description: "Hello World Lambda Function ARN"
+    Value: !GetAtt DatabaseOperationsFunction.Arn
