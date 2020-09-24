@@ -1,0 +1,16 @@
+{
+  "Records": [
+    {
+      "messageId": "fc23b991-1cf1-4e73-b953-8a9c65b0b828",
+      "receiptHandle": "AQEBb4c74AE9xyH6a8czbZnhoDubUw3vCJYM+24X+JmIbi1dvtdtPcymA0yjbvc5+3Vmtdj68U4PvRwdMJaP5yXDOF70aG6eu+mjsdoDJKyOLAGgxgTjuWwFg4z1XmtjbQ9q6O69K0WOiJg5EMToGZYsX7SU68u2wbrMaHpX7h1tDoIqBZwKREeI8XAuX0o0uC0QkrpXX4onL7a+jl7ZfgHEgv0FckBUopiUKXc5MBOC3/UQdFEKbKI9Yo9v5jX6OytnnW2FQsYVRox24VJOEuWBUA==",
+      "body": "{\"name\":\"stoinis\",\"title\":\"aws\",\"score\":\"90\",\"doc\":\"11th Sept\"}",
+      "attributes": [null],
+      "messageAttributes": [null],
+      "md5OfMessageAttributes": "85e169586ba371fa7112f1169288e3a8",
+      "md5OfBody": "abd60bd395f3eba66e5a4ace7855548b",
+      "eventSource": "aws:sqs",
+      "eventSourceARN": "arn:aws:sqs:ap-south-1:357550834183:Sample1.fifo",
+      "awsRegion": "ap-south-1"
+    }
+  ]
+}

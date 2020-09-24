@@ -47,6 +47,42 @@ Resources:
             Path: /certigen/certificate/{type}
             Method: put
 
+  DispatchCertificatesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: yeti-certigen-dispatch
+      Description: Dispatch the array of Certificates for Printing
+      CodeUri: certigen-dispatch
+      Handler: index.lambdaHandler
+      Runtime: nodejs12.x
+      Role: arn:aws:iam::357550834183:role/service-role/yeti-lambda-role-190ry10t
+      Events:
+        DispatchCertificate:
+          Type: Api
+          Properties:
+            Path: /certigen/dispatch
+            Method: post
+
+  PrintCertificateFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: yeti-certigen-print
+      Description: Print the PDF of the certificates and send to S3
+      CodeUri: certigen-print-certificates
+      Handler: index.lambdaHandler
+      Runtime: nodejs12.x
+      Role: arn:aws:iam::357550834183:role/service-role/yeti-lambda-role-190ry10t
+      Layers:
+        - !Sub arn:aws:lambda:ap-south-1:357550834183:layer:chrome-headless:1
+        - !Sub arn:aws:lambda:ap-south-1:357550834183:layer:commonLibs:1
+      Events:
+        GetCertificatesFromQueue:
+          Type: SQS
+          Properties:
+            Queue: arn:aws:sqs:ap-south-1:357550834183:Sample1.fifo
+            BatchSize: 1
+            Enabled: true
+
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM

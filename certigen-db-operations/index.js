@@ -3,6 +3,7 @@ AWS.config.update({ region: "ap-south-1" });
 var docClient = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
 
 //TODO:Complete the code for updating certificates and the respective metadata
+//TODO: Improve the concurrency by: https://medium.com/front-end-weekly/async-await-is-not-about-making-asynchronous-code-synchronous-ba5937a0c11e#:~:text=Using%20async%20%2Fawait%20is%20simple,usage%20inside%20the%20async%20function
 
 const CERT_DATA_TABLE = "CertificateTable";
 const CERT_META_TABLE = "MetaDataTable";
@@ -20,7 +21,7 @@ const insertToDatabase = async (params) => {
 //To return
 const missingParams = () => {
   return {
-    statusCodeCode: 400,
+    statusCode: 400,
     body: JSON.stringify({
       error: true,
       message: "Missing/Invalid Parameters",
@@ -180,7 +181,7 @@ exports.lambdaHandler = async (event) => {
               S: eventBody["creator"],
             },
           },
-          TableName: CERT_META_TABLE,
+          TableName: CERT_DATA_TABLE,
         };
 
         const metaDataTableResult = await insertToDatabase(params);

@@ -60,29 +60,42 @@ var docClient = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
 //   }
 // })();
 
-(async function () {
-  params = {
-    Item: {
-      Type: {
-        S: "few",
-      },
-      Title: {
-        S: "few",
-      },
-      Author: {
-        S: "few",
-      },
-      Creator: {
-        S: "few",
-      },
-    },
-    TableName: "MetaDataTable",
-  };
+// (async function () {
+//   params = {
+//     Item: {
+//       Type: {
+//         S: "few",
+//       },
+//       Title: {
+//         S: "few",
+//       },
+//       Author: {
+//         S: "few",
+//       },
+//       Creator: {
+//         S: "few",
+//       },
+//     },
+//     TableName: "MetaDataTable",
+//   };
 
-  try {
-    res = await docClient.putItem(params).promise();
-    console.log(res);
-  } catch (err) {
-    console.log(err);
+//   try {
+//     res = await docClient.putItem(params).promise();
+//     console.log(res);
+//   } catch (err) {
+//     console.log(err);
+//   }
+// })();
+
+const sqs = new AWS.SQS({ apiVersion: "2012-11-05" });
+const QUEUE_URL =
+  "https://sqs.ap-south-1.amazonaws.com/357550834183/Sample1.fifo";
+
+sqs.sendMessage(params, function (err, data) {
+  if (err) {
+    console.log("Error", err);
+    failedCertificates.push(certificate);
+  } else {
+    console.log("Success", data);
   }
-})();
+});
